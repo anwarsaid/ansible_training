@@ -1,0 +1,14 @@
+---
+- name: lab01 
+  hosts: xiang
+  become: yes
+  gather_facts: False
+  pre_tasks:
+    - name: Install python for Ansible
+      raw: test -e /usr/bin/python || (update && yum install -y python36u python36u-libs python36u-devel python36u-pip -y python36u python36u-libs python36u-devel python36u-pip)
+      changed_when: False
+    - setup:
+  roles:
+    - base
+    - httpd
+    - tomcat

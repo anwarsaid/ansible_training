@@ -1,0 +1,31 @@
+- name: Add repository   
+  yum_repository:     
+    name: rpmfusion     
+    description: rpmfusion YUM repo     
+    baseurl: https://download1.rpmfusion.org/free/el/updates/7/x86_64
+- name: Install base packages
+  yum: 
+    name: [ansible, python-pipi]
+    state: installed
+  tags:
+    - packages
+- name: Upgrade pip
+  pip: name=pip state=latest
+  tags:
+    - packages
+- name: Create user
+  user:
+    name: "ansible_user"
+    state: present
+    generate_ssh_key: yes
+- name: Create .ssh folder
+  file:
+    path: "/home/ansible_user/.ssh/"
+    state: directory
+    mode: 0755
+- name: Set student authuorized key took from file
+  authorized_key:
+    user: student
+    state: present
+    key: "{{ lookup('file', '/home/student/.ssh/id_rsa.pub') }}"
+
