@@ -1,0 +1,4 @@
+---
+# defaults file for roles/galera_repos
+
+mariadb_release: 10.3

@@ -1,0 +1,6 @@
+---
+# handlers file for roles/galera_conf
+
+- name: Restart MariaDB Galera cluster
+  service: name=mariadb state=restarted
+  when: bootstrapped

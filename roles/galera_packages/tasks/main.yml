@@ -1,0 +1,33 @@
+---
+# tasks file for roles/galera_packages
+
+- name: Install MariaDB server packages
+  yum: 
+    name: [MariaDB-client, MariaDB-server, galera] 
+    state: present
+
+- name: Install percona-xtrabackup packages
+  yum: 
+    name: [percona-xtrabackup, socat]
+    state: present
+  when: 
+    - "mariadb_release is version_compare('10.2', '<')"
+
+- name: Install percona-xtrabackup-24 packages
+  yum: 
+    name: [percona-xtrabackup-24, socat]
+    state: present
+  when: 
+    - "mariadb_release is version_compare('10.2', '>=')"
+
+- name: Install MySQL-python
+  yum: 
+    name: MySQL-python
+    state: present
+
+- name: Ensure firewalld is disabled
+  systemd: 
+    name=firewalld 
+    enabled=no
+    state=stopped
+  tags: httpd
